@@ -1,0 +1,802 @@
+H? TênNguy?n Xuân Thành HungMSSV20235743
+5. Use case diagram : 
+- ?nh d?ng png : 
+
+- file duôi .astah :   trong folder ( Requirement ) 
+
+7. Create Aims class
+- code trong file Aims ( có ch?a các ph?n sau  ) :
+package com.example.myapp;
+
+public class Aims {
+	public static void main(String[] args) {
+		Cart anOrder = new Cart();
+		
+		DigitalVideoDisc dvd1 = new DigitalVideoDisc("The Lion King","Animation","Roger Allers",87,19.95f);
+		anOrder.addDigitalVideoDisc(dvd1);//  them dvd1 
+		
+		DigitalVideoDisc dvd2 = new DigitalVideoDisc("Star Wars", "Science Fiction", "George Lucas", 124, 24.95f);
+	
+		
+		DigitalVideoDisc dvd3 = new DigitalVideoDisc("Aladin","Animation",
+				18.99f);
+		anOrder.addDigitalVideoDisc(dvd2,dvd3);// them 2 dvd 1 luc
+		
+		anOrder.prinCart();
+		
+		System.out.println("Total cost :   " + anOrder.totalCost());
+		
+		anOrder.removeDigitalVideoDisc(dvd3);// xoa dvd3
+		
+		anOrder.prinCart();// in ra cac dvd trong gio hang
+				
+	}
+}
+ 
+8. Create the DigitalVideoDisc class and its attributes + 9. Create accessors and mutators for the class DigitalVideoDisc
+- code trong file DigitalVideoDisc ( có ch?a các ph?n sau ) : 
+package com.example.myapp;
+
+public class DigitalVideoDisc {
+	private String title;
+	private String category;
+	private String director;
+	private int length;
+	private float cost;
+	public String getTitle() {
+		return title;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public String getDirector() {
+		return director;
+	}
+	public int getLength() {
+		return length;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public DigitalVideoDisc(String title, String category, String director, int length, float cost) {
+		super();
+		this.title = title;
+		this.category = category;
+		this.director = director;
+		this.length = length;
+		this.cost = cost;
+	}
+	public DigitalVideoDisc(String title, String category, String director, float cost) {
+		super();
+		this.title = title;
+		this.category = category;
+		this.director = director;
+		this.cost = cost;
+	}
+	public DigitalVideoDisc(String title, String category, float cost) {
+		super();
+		this.title = title;
+		this.category = category;
+		this.cost = cost;
+	}
+	public DigitalVideoDisc(String title) {
+		super();
+		this.title = title;
+	}
+	public float getCost() {
+		return cost;
+	}
+}
+
+
+Reading Assignment: When should accessor methods be used?
+Ans :
+ 
+
+10. Create Constructor method
+- Create a DVD object by title 
+- Create a DVD object by category, title and cost 
+- Create a DVD object by director, category, title and cost 
+- Create a DVD object by all attributes: title, category, director, length and cost
+Result : 
+	public DigitalVideoDisc(String title, String category, String director, int length, float cost) {
+		super();
+		this.title = title;
+		this.category = category;
+		this.director = director;
+		this.length = length;
+		this.cost = cost;
+	}
+	public DigitalVideoDisc(String title, String category, String director, float cost) {
+		super();
+		this.title = title;
+		this.category = category;
+		this.director = director;
+		this.cost = cost;
+	}
+	public DigitalVideoDisc(String title, String category, float cost) {
+		super();
+		this.title = title;
+		this.category = category;
+		this.cost = cost;
+	}
+	public DigitalVideoDisc(String title) {
+		super();
+		this.title = title;
+	}
+	public float getCost() {
+		return cost;
+	}
+
+11. Create the Cart class to work with DigitalVideoDisc
+
+- Code trong file Cart : 
+
+
+package com.example.myapp;
+
+public class Cart {
+    private DigitalVideoDisc[] itemsOrdered;
+    private int qtyOrdered = 0;
+    private static final int MAX_NUMBERS_ORDERED = 20;
+
+    // Phuong th?c thêm dia
+    public void addDigitalVideoDisc(DigitalVideoDisc disc) {
+        if (qtyOrdered < MAX_NUMBERS_ORDERED) {
+            if (itemsOrdered == null) {
+                itemsOrdered = new DigitalVideoDisc[MAX_NUMBERS_ORDERED];
+            }
+            itemsOrdered[qtyOrdered] = disc;
+            qtyOrdered++;
+            System.out.println("The disc has been added");
+        } else {
+            System.out.println("The cart is almost full");
+        }
+    }
+
+    // Phuong th?c xóa dia
+    public void removeDigitalVideoDisc(DigitalVideoDisc disc) {
+        if (itemsOrdered != null && qtyOrdered > 0) {
+            int indexToRemove = -1;
+            for (int i = 0; i < qtyOrdered; i++) {
+                if (itemsOrdered[i] != null && itemsOrdered[i].equals(disc)) {
+                    indexToRemove = i;
+                    break;
+                }
+            }
+            if (indexToRemove != -1) {
+                for (int i = indexToRemove; i < qtyOrdered - 1; i++) {
+                    itemsOrdered[i] = itemsOrdered[i + 1];
+                }
+                itemsOrdered[qtyOrdered - 1] = null;
+                qtyOrdered--;
+                System.out.println("The disc has been removed");
+            } else {
+                System.out.println("The disc is not found in the cart");
+            }
+        } else {
+            System.out.println("The cart is empty");
+        }
+    }
+
+    // Phuong th?c tính t?ng chi phí
+    public double totalCost() {
+        double total = 0.0;
+        if (itemsOrdered != null) {
+            for (int i = 0; i < qtyOrdered; i++) {
+                if (itemsOrdered[i] != null) {
+                    total += itemsOrdered[i].getCost();
+                }
+            }
+        }
+        return total;
+    }
+    
+    //Phuong thuc in thanh phan disc
+    public void prinCart() {
+    	for(int i =0;i<qtyOrdered ;i++) {
+    		System.out.println( (i+1)+ "   " + itemsOrdered[i].getTitle() + "   " + itemsOrdered[i].getCost() );
+    	}
+    }
+    
+    // method overloading phuong thuc 1 ( them mang trong add )
+    // => uu di?m là không ph?i t?o m?ng ch?a các dvd mà du?c hoàn toàn t? d?ng nhung th? cx là
+    // nhu?c di?m t?i không di?m soát du?c, d? b? overhead nh?
+ 	public void addDigitalVideoDisc(DigitalVideoDisc[] dvdList) {
+ 	    for (DigitalVideoDisc dvd : dvdList) {
+ 	        if (qtyOrdered < MAX_NUMBERS_ORDERED) {
+ 	            itemsOrdered[qtyOrdered] = dvd;
+ 	            qtyOrdered++;
+ 	            System.out.println("The disc has been added: " + dvd.getTitle());
+ 	        } else {
+ 	            System.out.println("The cart is full. Cannot add " + dvd.getTitle());
+ 	            break;
+ 	        }
+ 	    }
+ 	}
+ 	
+ 	// method overloading phuong thuc 2 ( theo 2 dvds ) 
+ 	public void addDigitalVideoDisc(DigitalVideoDisc dvd1, DigitalVideoDisc dvd2) {
+ 	    if (qtyOrdered < MAX_NUMBERS_ORDERED) {
+ 	        itemsOrdered[qtyOrdered] = dvd1;
+ 	        qtyOrdered++;
+ 	        System.out.println("The disc has been added: " + dvd1.getTitle());
+ 	    } else {
+ 	        System.out.println("The cart is full. Cannot add " + dvd1.getTitle());
+ 	        return; // Không thêm ti?p n?u gi? hàng dã d?y
+ 	    }
+
+ 	    if (qtyOrdered < MAX_NUMBERS_ORDERED) {
+ 	        itemsOrdered[qtyOrdered] = dvd2;
+ 	        qtyOrdered++;
+ 	        System.out.println("The disc has been added: " + dvd2.getTitle());
+ 	    } else {
+ 	        System.out.println("The cart is full. Cannot add " + dvd2.getTitle());
+ 	    }
+ 	}
+
+}
+
+
+
+12. Create Carts of DigitalVideoDiscs
+Code trong ph?n Aims : 
+package com.example.myapp;
+
+public class Aims {
+	public static void main(String[] args) {
+		Cart anOrder = new Cart();
+		
+		DigitalVideoDisc dvd1 = new DigitalVideoDisc("The Lion King","Animation","Roger Allers",87,19.95f);
+		anOrder.addDigitalVideoDisc(dvd1);//  them dvd1 
+		
+		DigitalVideoDisc dvd2 = new DigitalVideoDisc("Star Wars", "Science Fiction", "George Lucas", 124, 24.95f);
+	
+		
+		DigitalVideoDisc dvd3 = new DigitalVideoDisc("Aladin","Animation",
+				18.99f);
+		anOrder.addDigitalVideoDisc(dvd2,dvd3);// them 2 dvd 1 luc
+		
+		anOrder.prinCart();
+		
+		System.out.println("Total cost :   " + anOrder.totalCost());
+		
+		anOrder.removeDigitalVideoDisc(dvd3);// xoa dvd3
+		
+		anOrder.prinCart();// in ra cac dvd trong gio hang
+				
+	}
+}
+
+
+13. Removing items from the cart
+
+Code ch?a ph?n removing ( trong ph?n Cart )  : 
+// Phuong th?c xóa dia
+    public void removeDigitalVideoDisc(DigitalVideoDisc disc) {
+        if (itemsOrdered != null && qtyOrdered > 0) {
+            int indexToRemove = -1;
+            for (int i = 0; i < qtyOrdered; i++) {
+                if (itemsOrdered[i] != null && itemsOrdered[i].equals(disc)) {
+                    indexToRemove = i;
+                    break;
+                }
+            }
+            if (indexToRemove != -1) {
+                for (int i = indexToRemove; i < qtyOrdered - 1; i++) {
+                    itemsOrdered[i] = itemsOrdered[i + 1];
+                }
+                itemsOrdered[qtyOrdered - 1] = null;
+                qtyOrdered--;
+                System.out.println("The disc has been removed");
+            } else {
+                System.out.println("The disc is not found in the cart");
+            }
+        } else {
+            System.out.println("The cart is empty");
+        }
+    }
+
+
+Hàm g?i : 
+
+VD : 		anOrder.removeDigitalVideoDisc(dvd3);// xoa dvd3
+
+
+14. Working with method overloading
+
+14.1 Overloading by differing types of parameter
+
+// method overloading phuong thuc 1 ( them mang trong add )
+    // => uu di?m là không ph?i t?o m?ng ch?a các dvd mà du?c hoàn toàn t? d?ng nhung th? cx là
+    // nhu?c di?m t?i không di?m soát du?c, d? b? overhead nh?
+ 	public void addDigitalVideoDisc(DigitalVideoDisc[] dvdList) {
+ 	    for (DigitalVideoDisc dvd : dvdList) {
+ 	        if (qtyOrdered < MAX_NUMBERS_ORDERED) {
+ 	            itemsOrdered[qtyOrdered] = dvd;
+ 	            qtyOrdered++;
+ 	            System.out.println("The disc has been added: " + dvd.getTitle());
+ 	        } else {
+ 	            System.out.println("The cart is full. Cannot add " + dvd.getTitle());
+ 	            break;
+ 	        }
+ 	    }
+ 	}
+
+
+14.2 Overloading by differing the number of parameters
+
+// method overloading phuong thuc 2 ( theo 2 dvds ) 
+ 	public void addDigitalVideoDisc(DigitalVideoDisc dvd1, DigitalVideoDisc dvd2) {
+ 	    if (qtyOrdered < MAX_NUMBERS_ORDERED) {
+ 	        itemsOrdered[qtyOrdered] = dvd1;
+ 	        qtyOrdered++;
+ 	        System.out.println("The disc has been added: " + dvd1.getTitle());
+ 	    } else {
+ 	        System.out.println("The cart is full. Cannot add " + dvd1.getTitle());
+ 	        return; // Không thêm ti?p n?u gi? hàng dã d?y
+ 	    }
+
+ 	    if (qtyOrdered < MAX_NUMBERS_ORDERED) {
+ 	        itemsOrdered[qtyOrdered] = dvd2;
+ 	        qtyOrdered++;
+ 	        System.out.println("The disc has been added: " + dvd2.getTitle());
+ 	    } else {
+ 	        System.out.println("The cart is full. Cannot add " + dvd2.getTitle());
+ 	    }
+ 	}
+
+15. Passing parameter
+
+Question: Is JAVA a Pass by Value or a Pass by Reference programming language?
+
+Java luôn s? d?ng co ch? truy?n theo giá tr? (pass by value)
+
+Code trong class TestPassingParameter : 
+
+package com.example.myapp;
+
+public class TestPassingParameter {
+    public static void main(String[] args) {
+        DigitalVideoDisc jungleDVD = new DigitalVideoDisc("Jungle", "Adventure", "Jon Favreau", 120, 20.0f);
+        DigitalVideoDisc cinderellaDVD = new DigitalVideoDisc("Cinderella", "Fantasy", "Kenneth Branagh", 105, 18.5f);
+
+        swap(jungleDVD, cinderellaDVD);  // Th? d?i ch? hai d?i tu?ng
+        System.out.println("jungle DVD title: " + jungleDVD.getTitle());
+        System.out.println("cinderella DVD title: " + cinderellaDVD.getTitle());
+
+        changeTitle(jungleDVD, cinderellaDVD.getTitle());  // Ð?i tiêu d? c?a jungleDVD
+
+        System.out.println("jungle DVD title: " + jungleDVD.getTitle());
+    }
+
+    public static void swap(DigitalVideoDisc dvd1, DigitalVideoDisc dvd2) {
+        DigitalVideoDisc temp = dvd1;
+        dvd1 = dvd2;
+        dvd2 = temp;
+    }
+
+    public static void changeTitle(DigitalVideoDisc dvd, String title) {
+        dvd.setTitle(title);
+    }
+}
+
+
+
+1 ) After the call of swap(jungleDVD, cinderellaDVD) why does the title of these two 
+objects still remain?
+
+Ans : 
+*  Java truy?n tham s? theo giá tr? (Pass by Value), k? c? khi tham s? là m?t d?i tu?ng.
+*  Khi g?i swap(jungleDVD, cinderellaDVD), tham s? dvd1 và dvd2 trong phuong th?c ch? là b?n sao c?a các tham chi?u jungleDVD và cinderellaDVD trong main().
+*  Vi?c gán l?i dvd1 = dvd2 và dvd2 = temp ch? thay d?i các b?n sao trong phuong th?c swap, không ?nh hu?ng d?n giá tr? ban d?u c?a jungleDVD và cinderellaDVD trong main().
+2) After the call of changeTitle(jungleDVD, cinderellaDVD.getTitle()) why is 
+the title of the JungleDVD changed?
+
+Ans : 
+*  Khi truy?n jungleDVD vào changeTitle(), Java truy?n m?t b?n sao c?a tham chi?u jungleDVD (t?c là b?n sao c?a d?a ch? ô nh? ch?a d?i tu?ng).
+*  Khi th?c hi?n dvd.setTitle(title);, phuong th?c setTitle() tr?c ti?p thay d?i giá tr? c?a thu?c tính title bên trong d?i tu?ng mà tham chi?u dang tr? d?n.
+*  Vì tham chi?u jungleDVD trong main() và dvd trong changeTitle() d?u tr? d?n cùng m?t d?i tu?ng trong b? nh?, nên s? thay d?i trong phuong th?c cung ?nh hu?ng d?n d?i tu?ng g?c.
+=> JAVA is always a pass by value programming language.
+
+16. Classifier Member and Instance Member
+
+- Trong ph?n DigitalVideoDisc ta thêm các bi?n 
+
+
+    // Thu?c tính l?p (Class Attribute)
+    private static int nbDigitalVideoDiscs = 0;
+    
+    // Thu?c tính instance (Instance Attribute)
+    private int id;
+
+
+- Và ph?n tr? v? : 
+
+    // Method to get the total number of DVDs created
+    public static int getNbDigitalVideoDiscs() {
+        return nbDigitalVideoDiscs;
+    }
+    
+    // Getter cho id
+    public int getId() {
+        return id;
+    }
+	
+Cùng v?i dó trong m?i constructor ta tang giá tr? nbDigitalVideoDiscs++;
+
+Code cu?i cùng c?a DigitalVideoDisc :  
+
+package com.example.myapp;
+
+public class DigitalVideoDisc {
+    private String title;
+    private String category;
+    private String director;
+    private int length;
+    private float cost;
+    
+    // Thu?c tính l?p (Class Attribute)
+    private static int nbDigitalVideoDiscs = 0;
+    
+    // Thu?c tính instance (Instance Attribute)
+    private int id;
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getCategory() {
+        return category;
+    }
+    
+    public String getDirector() {
+        return director;
+    }
+    
+    public int getLength() {
+        return length;
+    }
+    
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    public DigitalVideoDisc(String title, String category, String director, int length, float cost) {
+        super();
+        this.title = title;
+        this.category = category;
+        this.director = director;
+        this.length = length;
+        this.cost = cost;
+        
+        // C?p nh?t s? lu?ng DVD và gán ID
+        nbDigitalVideoDiscs++;
+        this.id = nbDigitalVideoDiscs;
+    }
+    
+    public DigitalVideoDisc(String title, String category, String director, float cost) {
+        super();
+        this.title = title;
+        this.category = category;
+        this.director = director;
+        this.cost = cost;
+        
+        // C?p nh?t s? lu?ng DVD và gán ID
+        nbDigitalVideoDiscs++;
+        this.id = nbDigitalVideoDiscs;
+    }
+    
+    public DigitalVideoDisc(String title, String category, float cost) {
+        super();
+        this.title = title;
+        this.category = category;
+        this.cost = cost;
+        
+        // C?p nh?t s? lu?ng DVD và gán ID
+        nbDigitalVideoDiscs++;
+        this.id = nbDigitalVideoDiscs;
+    }
+    
+    public DigitalVideoDisc(String title) {
+        super();
+        this.title = title;
+        
+        // C?p nh?t s? lu?ng DVD và gán ID
+        nbDigitalVideoDiscs++;
+        this.id = nbDigitalVideoDiscs;
+    }
+    
+    public float getCost() {
+        return cost;
+    }
+    
+    // Method to get the total number of DVDs created
+    public static int getNbDigitalVideoDiscs() {
+        return nbDigitalVideoDiscs;
+    }
+    
+    // Getter cho id
+    public int getId() {
+        return id;
+    }
+}
+
+
+
+T?NG K?T CODE CU?I CÙNG : 
+
+File DigitalVideoDisc.java : 
+
+package com.example.myapp;
+
+public class DigitalVideoDisc {
+    private String title;
+    private String category;
+    private String director;
+    private int length;
+    private float cost;
+    
+    // Thu?c tính l?p (Class Attribute)
+    private static int nbDigitalVideoDiscs = 0;
+    
+    // Thu?c tính instance (Instance Attribute)
+    private int id;
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getCategory() {
+        return category;
+    }
+    
+    public String getDirector() {
+        return director;
+    }
+    
+    public int getLength() {
+        return length;
+    }
+    
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    public DigitalVideoDisc(String title, String category, String director, int length, float cost) {
+        super();
+        this.title = title;
+        this.category = category;
+        this.director = director;
+        this.length = length;
+        this.cost = cost;
+        
+        // C?p nh?t s? lu?ng DVD và gán ID
+        nbDigitalVideoDiscs++;
+        this.id = nbDigitalVideoDiscs;
+    }
+    
+    public DigitalVideoDisc(String title, String category, String director, float cost) {
+        super();
+        this.title = title;
+        this.category = category;
+        this.director = director;
+        this.cost = cost;
+        
+        // C?p nh?t s? lu?ng DVD và gán ID
+        nbDigitalVideoDiscs++;
+        this.id = nbDigitalVideoDiscs;
+    }
+    
+    public DigitalVideoDisc(String title, String category, float cost) {
+        super();
+        this.title = title;
+        this.category = category;
+        this.cost = cost;
+        
+        // C?p nh?t s? lu?ng DVD và gán ID
+        nbDigitalVideoDiscs++;
+        this.id = nbDigitalVideoDiscs;
+    }
+    
+    public DigitalVideoDisc(String title) {
+        super();
+        this.title = title;
+        
+        // C?p nh?t s? lu?ng DVD và gán ID
+        nbDigitalVideoDiscs++;
+        this.id = nbDigitalVideoDiscs;
+    }
+    
+    public float getCost() {
+        return cost;
+    }
+    
+    // Method to get the total number of DVDs created
+    public static int getNbDigitalVideoDiscs() {
+        return nbDigitalVideoDiscs;
+    }
+    
+    // Getter cho id
+    public int getId() {
+        return id;
+    }
+}
+
+
+File Cart.java : 
+
+package com.example.myapp;
+
+public class Cart {
+    private DigitalVideoDisc[] itemsOrdered;
+    private int qtyOrdered = 0;
+    private static final int MAX_NUMBERS_ORDERED = 20;
+
+    // Phuong th?c thêm dia
+    public void addDigitalVideoDisc(DigitalVideoDisc disc) {
+        if (qtyOrdered < MAX_NUMBERS_ORDERED) {
+            if (itemsOrdered == null) {
+                itemsOrdered = new DigitalVideoDisc[MAX_NUMBERS_ORDERED];
+            }
+            itemsOrdered[qtyOrdered] = disc;
+            qtyOrdered++;
+            System.out.println("The disc has been added");
+        } else {
+            System.out.println("The cart is almost full");
+        }
+    }
+
+    // Phuong th?c xóa dia
+    public void removeDigitalVideoDisc(DigitalVideoDisc disc) {
+        if (itemsOrdered != null && qtyOrdered > 0) {
+            int indexToRemove = -1;
+            for (int i = 0; i < qtyOrdered; i++) {
+                if (itemsOrdered[i] != null && itemsOrdered[i].equals(disc)) {
+                    indexToRemove = i;
+                    break;
+                }
+            }
+            if (indexToRemove != -1) {
+                for (int i = indexToRemove; i < qtyOrdered - 1; i++) {
+                    itemsOrdered[i] = itemsOrdered[i + 1];
+                }
+                itemsOrdered[qtyOrdered - 1] = null;
+                qtyOrdered--;
+                System.out.println("The disc has been removed");
+            } else {
+                System.out.println("The disc is not found in the cart");
+            }
+        } else {
+            System.out.println("The cart is empty");
+        }
+    }
+
+    // Phuong th?c tính t?ng chi phí
+    public double totalCost() {
+        double total = 0.0;
+        if (itemsOrdered != null) {
+            for (int i = 0; i < qtyOrdered; i++) {
+                if (itemsOrdered[i] != null) {
+                    total += itemsOrdered[i].getCost();
+                }
+            }
+        }
+        return total;
+    }
+    
+    //Phuong thuc in thanh phan disc
+    public void prinCart() {
+    	for(int i =0;i<qtyOrdered ;i++) {
+    		System.out.println( (i+1)+ "   " + itemsOrdered[i].getTitle() + "   " + itemsOrdered[i].getCost() );
+    	}
+    }
+    
+    // method overloading phuong thuc 1 ( them mang trong add )
+    // => uu di?m là không ph?i t?o m?ng ch?a các dvd mà du?c hoàn toàn t? d?ng nhung th? cx là
+    // nhu?c di?m t?i không di?m soát du?c, d? b? overhead nh?
+ 	public void addDigitalVideoDisc(DigitalVideoDisc[] dvdList) {
+ 	    for (DigitalVideoDisc dvd : dvdList) {
+ 	        if (qtyOrdered < MAX_NUMBERS_ORDERED) {
+ 	            itemsOrdered[qtyOrdered] = dvd;
+ 	            qtyOrdered++;
+ 	            System.out.println("The disc has been added: " + dvd.getTitle());
+ 	        } else {
+ 	            System.out.println("The cart is full. Cannot add " + dvd.getTitle());
+ 	            break;
+ 	        }
+ 	    }
+ 	}
+ 	
+ 	// method overloading phuong thuc 2 ( theo 2 dvds ) 
+ 	public void addDigitalVideoDisc(DigitalVideoDisc dvd1, DigitalVideoDisc dvd2) {
+ 	    if (qtyOrdered < MAX_NUMBERS_ORDERED) {
+ 	        itemsOrdered[qtyOrdered] = dvd1;
+ 	        qtyOrdered++;
+ 	        System.out.println("The disc has been added: " + dvd1.getTitle());
+ 	    } else {
+ 	        System.out.println("The cart is full. Cannot add " + dvd1.getTitle());
+ 	        return; // Không thêm ti?p n?u gi? hàng dã d?y
+ 	    }
+
+ 	    if (qtyOrdered < MAX_NUMBERS_ORDERED) {
+ 	        itemsOrdered[qtyOrdered] = dvd2;
+ 	        qtyOrdered++;
+ 	        System.out.println("The disc has been added: " + dvd2.getTitle());
+ 	    } else {
+ 	        System.out.println("The cart is full. Cannot add " + dvd2.getTitle());
+ 	    }
+ 	}
+
+}
+
+
+
+File TestPassingParament.java : 
+
+package com.example.myapp;
+
+public class TestPassingParameter {
+    public static void main(String[] args) {
+        DigitalVideoDisc jungleDVD = new DigitalVideoDisc("Jungle", "Adventure", "Jon Favreau", 120, 20.0f);
+        DigitalVideoDisc cinderellaDVD = new DigitalVideoDisc("Cinderella", "Fantasy", "Kenneth Branagh", 105, 18.5f);
+
+        swap(jungleDVD, cinderellaDVD);  // Th? d?i ch? hai d?i tu?ng
+        System.out.println("jungle DVD title: " + jungleDVD.getTitle());
+        System.out.println("cinderella DVD title: " + cinderellaDVD.getTitle());
+
+        changeTitle(jungleDVD, cinderellaDVD.getTitle());  // Ð?i tiêu d? c?a jungleDVD
+
+        System.out.println("jungle DVD title: " + jungleDVD.getTitle());
+    }
+
+    public static void swap(DigitalVideoDisc dvd1, DigitalVideoDisc dvd2) {
+        DigitalVideoDisc temp = dvd1;
+        dvd1 = dvd2;
+        dvd2 = temp;
+    }
+
+    public static void changeTitle(DigitalVideoDisc dvd, String title) {
+        dvd.setTitle(title);
+    }
+}
+
+
+File Aims.java : 
+
+
+package com.example.myapp;
+
+public class Aims {
+	public static void main(String[] args) {
+		Cart anOrder = new Cart();
+		
+		DigitalVideoDisc dvd1 = new DigitalVideoDisc("The Lion King","Animation","Roger Allers",87,19.95f);
+		anOrder.addDigitalVideoDisc(dvd1);//  them dvd1 
+		
+		DigitalVideoDisc dvd2 = new DigitalVideoDisc("Star Wars", "Science Fiction", "George Lucas", 124, 24.95f);
+	
+		
+		DigitalVideoDisc dvd3 = new DigitalVideoDisc("Aladin","Animation",
+				18.99f);
+		anOrder.addDigitalVideoDisc(dvd2,dvd3);// them 2 dvd 1 luc
+		
+		anOrder.prinCart();
+		
+		System.out.println("Total cost :   " + anOrder.totalCost());
+		
+		anOrder.removeDigitalVideoDisc(dvd3);// xoa dvd3
+		
+		anOrder.prinCart();// in ra cac dvd trong gio hang
+		
+		// in ra tong so luong
+		System.out.println("Tong so luong : " + DigitalVideoDisc.getNbDigitalVideoDiscs());
+		
+		//  in ra id cho tung dvd : 
+		
+		System.out.println("DVD1 id: " + dvd1.getId());
+        System.out.println("DVD2 id: " + dvd2.getId());
+				
+	}
+}
+
