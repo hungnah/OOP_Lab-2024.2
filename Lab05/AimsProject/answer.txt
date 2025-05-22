@@ -1,0 +1,62 @@
+Họ Tên	Nguyễn Xuân Thành Hưng
+MSSV	20235743
+
+
+14. Constructors of whole classes and parent classes
+Which classes are aggregates of other classes?
+Answer :
+•Cart là aggregate của Media.
+•Store là aggregate của Media.
+•CompactDisc là aggregate của Track.
+
+16. Polymorphism with toString() method
+
+Reading Assignment: Please answer three questions below: 
+- What are the advantages of Polymorphism? 
+
+Tính đa hình trong lập trình hướng đối tượng mang lại nhiều lợi ích quan trọng:
+•	Giúp viết mã linh hoạt và dễ mở rộng, cho phép xử lý các đối tượng khác nhau thông qua một giao diện chung
+•	Giảm sự phức tạp của mã nguồn bằng cách tách giao diện từ cách triển khai cụ thể
+•	Tăng khả năng tái sử dụng mã nguồn khi có thể thay đổi triển khai mà không cần thay đổi giao diện
+•	Cho phép thêm các lớp mới vào hệ thống mà không cần sửa đổi mã hiện có (tuân thủ nguyên tắc Mở-Đóng)
+•	Tạo ra mã nguồn dễ bảo trì và dễ đọc hơn
+
+- How is Inheritance useful to achieve Polymorphism in Java? 
+
+Kế thừa là nền tảng quan trọng để đạt được tính đa hình trong Java:
+•	Cho phép lớp con kế thừa các phương thức từ lớp cha và ghi đè (override) chúng để cung cấp triển khai riêng
+•	Tạo mối quan hệ phân cấp "IS-A" giữa các lớp, cho phép sử dụng đối tượng lớp con ở bất kỳ nơi nào mà đối tượng lớp cha được yêu cầu
+•	Cung cấp cơ chế để JVM có thể xác định phương thức nào sẽ được gọi tại thời điểm chạy (dynamic method dispatch)
+•	Cho phép một biến của lớp cha tham chiếu đến đối tượng của lớp con, từ đó tạo điều kiện cho việc triển khai các phương thức đa hình
+
+- What are the differences between Polymorphism and Inheritance in Java?
+
+Kế thừa và đa hình có những điểm khác biệt quan trọng:
+•	Mục đích: Kế thừa tập trung vào việc tái sử dụng mã và thiết lập mối quan hệ phân cấp, trong khi đa hình tập trung vào việc xác định hành vi tại thời điểm chạy
+•	Thời điểm xác định: Kế thừa được xác định tại thời điểm biên dịch (compile-time), còn đa hình có thể hoạt động tại thời điểm chạy (run-time)
+•	Bản chất: Kế thừa là một mối quan hệ tĩnh giữa các lớp, trong khi đa hình là một hành vi động
+•	Cách thực hiện: Kế thừa được thực hiện thông qua từ khóa extends và implements, còn đa hình được thực hiện thông qua ghi đè phương thức và ràng buộc động
+•	Áp dụng: Đa hình có thể đạt được không chỉ thông qua kế thừa mà còn thông qua giao diện (interface), trong khi kế thừa chỉ là một cơ chế để thiết lập mối quan hệ giữa các lớp
+
+
+17. Sort media in the cart
+Question:
+- What class should implement the Comparable interface? 
+	+) Vì chúng ta muốn so sánh các phần tử trong giỏ hàng (cart), và tất cả đều là các đối tượng thuộc kiểu chung Media, nên công thức hợp lý nhất là cho Media implement Comparable<Media>. Khi đó mọi lớp con (Book, CompactDisc, DigitalVideoDisc) sẽ kế thừa cơ chế so sánh tự nhiên đó.
+
+- In those classes, how should you implement the compareTo()method to reflect the ordering that we want? 
+	+)Trong class Media, ta sẽ phải override phương thức compareTo(T o) để định nghĩa quy tắc sắp xếp mặc định cho các đối tượng Media . Ví dụ, ta có thể chọn sắp xếp mặc định theo tiêu đề, và nếu tiêu đề giống nhau, thì theo giá (tăng dần hoặc giảm dần tùy theo yêu cầu). Phương thức compareTo() nên trả về một số nguyên âm nếu đối tượng hiện tại nhỏ hơn đối tượng được so sánh, một số dương nếu lớn hơn, và 0 nếu bằng nhau .
+- Can we have two ordering rules of the item (by title then cost and by cost then title) if we use this Comparable interface approach? 
+	+)Không. Comparable chỉ cho phép một thứ tự tự nhiên duy nhất (compareTo). Muốn thứ tự khác (ví dụ giá trước rồi tên), bạn phải dùng Comparator riêng biệt, không thể “đổi” trong compareTo.
+
+- Suppose the DVDs have a different ordering rule from the other media types, that is by title, then decreasing length, then cost. How would you modify your code to allow this?
+	+)Giữ compareTo() của Media nguyên vẹn cho natural ordering, và khi cần sort DVD theo luật riêng, dùng Comparator<DigitalVideoDisc>:
+
+Comparator<DigitalVideoDisc> dvdOrder = Comparator
+    .comparing(DigitalVideoDisc::getTitle)
+    .thenComparing(Comparator.comparingInt(DigitalVideoDisc::getLength).reversed())
+    .thenComparing(DigitalVideoDisc::getCost);
+
+Collections.sort(listOfDvds, dvdOrder);
+
+
